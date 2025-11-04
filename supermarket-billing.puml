@@ -1,0 +1,58 @@
+@startuml SupermarketBillingSystem
+
+title Supermarket Billing System UML Diagram
+
+class Product {
+  - productId: int
+  - name: String
+  - price: double
+  - quantityInStock: int
+  + updateStock(q: int): void
+  + getDetails(): String
+}
+
+class Inventory {
+  - inventoryId: int
+  - products: List<Product>
+  + addProduct(p: Product): void
+  + removeProduct(p: Product): void
+  + searchProduct(name: String): Product
+}
+
+class CartItem {
+  - quantity: int
+  - product: Product
+  + getTotalPrice(): double
+}
+
+class Sale {
+  - saleId: int
+  - date: Date
+  - cartItems: List<CartItem>
+  + calculateTotal(): double
+  + generateReceipt(): String
+}
+
+class User {
+  - userId: int
+  - username: String
+  - password: String
+  - role: String // Admin or Cashier
+  + authenticate(): boolean
+}
+
+class Customer {
+  - customerId: int
+  - name: String
+  - contactDetails: String
+  + viewPurchaseHistory(): List<Sale>
+}
+
+' Relationships
+Inventory "1" -- "*" Product : contains
+Sale "1" -- "*" CartItem : includes
+CartItem "*" -- "1" Product : references
+User "1" -- "*" Sale : processes
+Customer "1" -- "*" Sale : makes
+
+@enduml
